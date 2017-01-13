@@ -10,12 +10,12 @@
 # above copyright notice is included.
 #++
 
-require 'test/unit'
-require 'test/preload'
+require 'helper'
+require 'preload'
 require 'builder'
 require 'builder/xmlmarkup'
 
-class TestMarkup < Test::Unit::TestCase
+class TestMarkup < Builder::Test
   def setup
     @xml = Builder::XmlMarkup.new
   end
@@ -129,7 +129,7 @@ class TestMarkup < Test::Unit::TestCase
   end
 
   def test_reference_methods
-    @xml.title { |x| x.a { x.b(name) } }
+    @xml.title { |x| x.a { x.b(_name) } }
     assert_equal "<title><a><b>bob</b></a></title>", @xml.target!
   end
 
@@ -172,12 +172,12 @@ class TestMarkup < Test::Unit::TestCase
     assert_equal "<div><span><a href=\"ref\">text</a></span></div>", @xml.target!
   end
 
-  def name
+  def _name
     "bob"
   end
 end
 
-class TestAttributeEscaping < Test::Unit::TestCase
+class TestAttributeEscaping < Builder::Test
 
   def setup
     @xml = Builder::XmlMarkup.new
@@ -215,7 +215,7 @@ class TestAttributeEscaping < Test::Unit::TestCase
 
 end
 
-class TestNameSpaces < Test::Unit::TestCase
+class TestNameSpaces < Builder::Test
   def setup
     @xml = Builder::XmlMarkup.new(:indent=>2)
   end
@@ -267,7 +267,7 @@ class TestNameSpaces < Test::Unit::TestCase
   end
 end
 
-class TestDeclarations < Test::Unit::TestCase
+class TestDeclarations < Builder::Test
   def setup
     @xml = Builder::XmlMarkup.new(:indent=>2)
   end
@@ -324,7 +324,7 @@ class TestDeclarations < Test::Unit::TestCase
 end
 
 
-class TestSpecialMarkup < Test::Unit::TestCase
+class TestSpecialMarkup < Builder::Test
   def setup
     @xml = Builder::XmlMarkup.new(:indent=>2)
   end
@@ -395,7 +395,7 @@ class TestSpecialMarkup < Test::Unit::TestCase
   end
 end
 
-class TestIndentedXmlMarkup < Test::Unit::TestCase
+class TestIndentedXmlMarkup < Builder::Test
   def setup
     @xml = Builder::XmlMarkup.new(:indent=>2)
   end
@@ -419,7 +419,7 @@ class TestIndentedXmlMarkup < Test::Unit::TestCase
     assert_equal "        <name>\n          <first>Jim</first>\n        </name>\n", @xml.target!
   end
 
-  class TestUtfMarkup < Test::Unit::TestCase
+  class TestUtfMarkup < Builder::Test
     if ! String.method_defined?(:encode)
       def setup
         @old_kcode = $KCODE
@@ -507,7 +507,7 @@ class TestIndentedXmlMarkup < Test::Unit::TestCase
     end
   end
 
-  class TestXmlEvents < Test::Unit::TestCase
+  class TestXmlEvents < Builder::Test
     def setup
       @handler = EventHandler.new
       @xe = Builder::XmlEvents.new(:target=>@handler)
